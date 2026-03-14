@@ -9,20 +9,17 @@ use crate::errors::TicketShieldError;
 pub struct BuyListedTicket<'info> {
     #[account(mut)]
     pub buyer: Signer<'info>,
-
-    /// CHECK: Verified via listing.seller constraint
+    /// CHECK: verified via listing.seller
     #[account(
         mut,
         constraint = seller.key() == listing.seller @ TicketShieldError::UnauthorizedCancellation
     )]
     pub seller: UncheckedAccount<'info>,
-
     #[account(
         seeds = [b"event", event.organizer.as_ref(), event.name.as_bytes()],
         bump = event.bump,
     )]
     pub event: Account<'info, Event>,
-
     #[account(
         mut,
         seeds = [b"listing", listing.ticket_mint.as_ref(), listing.seller.as_ref()],
@@ -31,13 +28,11 @@ pub struct BuyListedTicket<'info> {
         constraint = listing.event == event.key(),
     )]
     pub listing: Account<'info, Listing>,
-
     #[account(
         mut,
         constraint = escrow_token_account.key() == listing.escrow_token_account,
     )]
     pub escrow_token_account: Account<'info, TokenAccount>,
-
     #[account(
         init_if_needed,
         payer = buyer,
@@ -45,11 +40,9 @@ pub struct BuyListedTicket<'info> {
         associated_token::authority = buyer,
     )]
     pub buyer_ticket_account: Account<'info, TokenAccount>,
-
-    /// CHECK: Verified via listing.ticket_mint
+    /// CHECK: verified via listing.ticket_mint
     #[account(constraint = ticket_mint.key() == listing.ticket_mint)]
     pub ticket_mint: UncheckedAccount<'info>,
-
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
@@ -67,14 +60,13 @@ pub fn handler(ctx: Context<BuyListedTicket>) -> Result<()> {
         TicketShieldError::CannotBuyOwnListing
     );
 
-    // THE KEY CHECK — this single line makes scalping impossible
+    // THE KEY LINE — makes scalping impossible
     let max_price = ctx.accounts.event
         .max_resale_price()
         .ok_or(TicketShieldError::ArithmeticOverflow)?;
 
     require!(asking_price <= max_price, TicketShieldError::ResalePriceTooHigh);
 
-    // Transfer SOL from buyer to seller
     system_program::transfer(
         CpiContext::new(
             ctx.accounts.system_program.to_account_info(),
@@ -86,7 +78,6 @@ pub fn handler(ctx: Context<BuyListedTicket>) -> Result<()> {
         asking_price,
     )?;
 
-    // Transfer ticket from escrow to buyer
     let seeds: &[&[u8]] = &[
         b"listing",
         ticket_mint_key.as_ref(),
@@ -108,7 +99,6 @@ pub fn handler(ctx: Context<BuyListedTicket>) -> Result<()> {
         1,
     )?;
 
-    // Mark listing closed — stays on-chain as permanent audit record
     let listing = &mut ctx.accounts.listing;
     listing.is_active = false;
 
@@ -120,12 +110,8 @@ pub fn handler(ctx: Context<BuyListedTicket>) -> Result<()> {
         price_paid: asking_price,
     });
 
-    msg!(
-        "Ticket resold: {} bought from {} for {} lamports",
-        ctx.accounts.buyer.key(),
-        seller_key,
-        asking_price,
-    );
+    msg!("Ticket resold: {} bought from {} for {} lamports",
+        ctx.accounts.buyer.key(), seller_key, asking_price);
 
     Ok(())
 }
@@ -138,3 +124,23 @@ pub struct TicketResold {
     pub event: Pubkey,
     pub price_paid: u64,
 }
+```
+
+Scroll down → click **"Commit changes"** → **"Commit directly to main"** → **"Commit changes"**.
+
+---
+
+**Step 2 — Do the same for `list_ticket.rs`**
+
+Go to:
+```
+https://github.com/Sanchita-InLoop/TicketShield/blob/main/anchor/programs/ticketshield/src/instructions/list_ticket.rs
+```
+
+Check if it already has your real code — look for `token::transfer` and `max_resale_price`. If yes, skip this file. If it still shows the stub, edit and paste the same code from before.
+
+---
+
+**Step 3 — Do the same for `cancel_listing.rs`**
+```
+https://github.com/Sanchita-InLoop/TicketShield/blob/main/anchor/programs/ticketshield/src/instructions/cancel_listing.rs

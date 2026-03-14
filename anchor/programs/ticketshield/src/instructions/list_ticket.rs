@@ -85,7 +85,6 @@ pub fn handler(ctx: Context<ListTicket>, asking_price: u64) -> Result<()> {
         seller: ctx.accounts.seller.key(),
         event: ctx.accounts.event.key(),
         asking_price,
-        created_at: Clock::get()?.unix_timestamp,
     });
 
     msg!("Ticket listed by {} for {} lamports", ctx.accounts.seller.key(), asking_price);
@@ -99,5 +98,4 @@ pub struct TicketListed {
     pub seller: Pubkey,
     pub event: Pubkey,
     pub asking_price: u64,
-    pub created_at: i64,
 }
