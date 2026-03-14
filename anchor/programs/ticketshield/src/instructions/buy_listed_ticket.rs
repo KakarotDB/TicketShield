@@ -60,7 +60,6 @@ pub fn handler(ctx: Context<BuyListedTicket>) -> Result<()> {
         TicketShieldError::CannotBuyOwnListing
     );
 
-    // THE KEY LINE — makes scalping impossible
     let max_price = ctx.accounts.event
         .max_resale_price()
         .ok_or(TicketShieldError::ArithmeticOverflow)?;
@@ -124,23 +123,3 @@ pub struct TicketResold {
     pub event: Pubkey,
     pub price_paid: u64,
 }
-```
-
-Scroll down → click **"Commit changes"** → **"Commit directly to main"** → **"Commit changes"**.
-
----
-
-**Step 2 — Do the same for `list_ticket.rs`**
-
-Go to:
-```
-https://github.com/Sanchita-InLoop/TicketShield/blob/main/anchor/programs/ticketshield/src/instructions/list_ticket.rs
-```
-
-Check if it already has your real code — look for `token::transfer` and `max_resale_price`. If yes, skip this file. If it still shows the stub, edit and paste the same code from before.
-
----
-
-**Step 3 — Do the same for `cancel_listing.rs`**
-```
-https://github.com/Sanchita-InLoop/TicketShield/blob/main/anchor/programs/ticketshield/src/instructions/cancel_listing.rs
