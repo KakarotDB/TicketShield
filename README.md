@@ -163,10 +163,10 @@ yarn dev
 
 | Person | Contribution |
 |---|---|
-| **Person A** | Smart contract core — `create_event`, `purchase_ticket`, state structs, deployment |
-| **Person B** | Resale enforcement — `list_ticket`, `buy_listed_ticket`, `cancel_listing`, tests |
-| **Person C** | Frontend hooks + components — `useProgram`, `useEventData`, `EventPage`, `MyTickets`, dark UI |
-| **Person D** | Home page, `ResaleMarket`, `Transparency`, pitch deck, demo script |
+| **Mrigaj** | Smart contract core — `create_event`, `purchase_ticket`, state structs, deployment |
+| **Sanchita** | Resale enforcement — `list_ticket`, `buy_listed_ticket`, `cancel_listing`, tests |
+| **Ubika** | Frontend hooks + components — `useProgram`, `useEventData`, `EventPage`, `MyTickets`, dark UI |
+| **Riddhi** | Home page, `ResaleMarket`, `Transparency`, pitch deck, demo script |
 
 ---
 
