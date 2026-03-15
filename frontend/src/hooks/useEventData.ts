@@ -29,7 +29,7 @@ export function useEventData(eventPDA: string | null) {
       try {
         const provider = new AnchorProvider(connection, {} as any, {});
         const program = new Program(idl as Idl, new PublicKey(PROGRAM_ID), provider);
-        const data = await program.account.event.fetch(new PublicKey(eventPDA));
+        const data = await program.account.event.fetch(new PublicKey(eventPDA)) as any;
         setEvent({
           organizer: data.organizer.toString(),
           name: data.name as string,

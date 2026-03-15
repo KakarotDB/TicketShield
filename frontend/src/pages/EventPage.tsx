@@ -1,3 +1,4 @@
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "../hooks/useProgram";
@@ -20,10 +21,27 @@ export default function EventPage() {
     setTxStatus("pending");
     setTxMessage("Purchasing ticket...");
     try {
-      // TODO Person C: wire purchase_ticket instruction here
-      setTxStatus("success");
-      setTxMessage("Ticket purchased! Check My Tickets.");
-    } catch (err: any) {
+  const eventPDA = new PublicKey(DEMO_EVENT_PDA || "11111111111111111111111111111111");
+
+  const [ticketMintPDA] = PublicKey.findProgramAddressSync(
+    [Buffer.from("ticket_mint"), eventPDA.toBuffer()],
+    program.programId
+  );
+
+  const sig = await (program.methods as any)
+    .purchaseTicket()
+    .accounts({
+      event: eventPDA,
+      ticketMint: ticketMintPDA,
+      buyer: publicKey,
+      systemProgram: SystemProgram.programId,
+    })
+    .rpc();
+
+  setTxSig(sig);
+  setTxStatus("success");
+  setTxMessage("Ticket purchased! Check My Tickets.");
+} catch (err: any) {
       setTxStatus("error");
       setTxMessage(err.message || "Purchase failed");
     }
