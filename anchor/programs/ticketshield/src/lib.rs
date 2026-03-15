@@ -9,7 +9,7 @@ use instructions::*;
 // Replace with real program ID after running:
 //   anchor build
 //   solana-keygen pubkey target/deploy/ticketshield-keypair.json
-declare_id!("3CWBxYn3dm7ZTgSzu4WnhLM8CtD2SzAPoiHukhbnikT7");
+declare_id!("Ft9ag3LtV2PWM5vADsyj9sEfthoWYKgwLiX3XxZtKoPX");
 
 #[program]
 pub mod ticketshield {
