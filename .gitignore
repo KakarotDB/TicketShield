@@ -1,0 +1,9 @@
+# Anchor build artifacts — too large for git, generated locally
+anchor/target/
+
+# Cargo.lock is fine to commit for programs, but optional
+# Leave it in for now
+
+# Frontend
+frontend/node_modules/
+frontend/.env
