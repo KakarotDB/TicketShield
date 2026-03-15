@@ -43,24 +43,71 @@ export default function CreateEvent() {
     }
   };
 
-  if (!publicKey) return <p>Connect your wallet to create an event.</p>;
+  if (!publicKey) return (
+    <div className="page-wrapper">
+      <div style={{
+        background: "rgba(124,58,237,0.08)",
+        border: "1px solid rgba(124,58,237,0.3)",
+        borderRadius: 16, padding: "40px 32px", maxWidth: 420, textAlign: "center"
+      }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>🎪</div>
+        <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 22, fontWeight: 700, color: "var(--text-primary)", marginBottom: 12 }}>
+          Connect wallet to create an event
+        </h2>
+        <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7 }}>
+          Only verified organisers can deploy events on-chain. Connect your Phantom wallet to continue.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <div style={{ maxWidth: 480 }}>
-      <h2>Create Event</h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <label>Event Name<input value={name} onChange={e => setName(e.target.value)} style={{ display: "block", width: "100%", padding: "0.5rem", marginTop: 4 }} /></label>
-        <label>Ticket Supply<input type="number" value={supply} onChange={e => setSupply(Number(e.target.value))} style={{ display: "block", width: "100%", padding: "0.5rem", marginTop: 4 }} /></label>
-        <label>Face Price (SOL)<input type="number" step="0.001" value={facePrice} onChange={e => setFacePrice(Number(e.target.value))} style={{ display: "block", width: "100%", padding: "0.5rem", marginTop: 4 }} /></label>
-        <label>Max Resale Cap (%)
-          <input type="number" value={resaleCap} onChange={e => setResaleCap(Number(e.target.value))} style={{ display: "block", width: "100%", padding: "0.5rem", marginTop: 4 }} />
-          <small style={{ color: "#888" }}>Max resale: {((facePrice * resaleCap) / 100).toFixed(4)} SOL</small>
-        </label>
-        <button onClick={handleCreate} disabled={txStatus === "pending"} style={{ padding: "0.75rem", fontSize: "1rem", cursor: "pointer", background: "#000", color: "#fff", border: "none", borderRadius: 8 }}>
-          {txStatus === "pending" ? "Creating..." : "Create Event on Solana"}
-        </button>
+    <div className="page-wrapper">
+      <div style={{
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(167,139,250,0.2)",
+        borderRadius: 18, padding: "36px 40px", maxWidth: 500
+      }}>
+        <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 26, fontWeight: 700, color: "var(--text-primary)", marginBottom: 6 }}>
+          Create Event
+        </h2>
+        <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 28 }}>
+          Deploy a new event on Solana with an enforced resale cap.
+        </p>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div>
+            <label className="dark-label">Event Name</label>
+            <input className="dark-input" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Coldplay India — Mumbai" />
+          </div>
+          <div>
+            <label className="dark-label">Ticket Supply</label>
+            <input className="dark-input" type="number" value={supply} onChange={e => setSupply(Number(e.target.value))} />
+          </div>
+          <div>
+            <label className="dark-label">Face Price (SOL)</label>
+            <input className="dark-input" type="number" step="0.001" value={facePrice} onChange={e => setFacePrice(Number(e.target.value))} />
+          </div>
+          <div>
+            <label className="dark-label">Max Resale Cap (%)</label>
+            <input className="dark-input" type="number" value={resaleCap} onChange={e => setResaleCap(Number(e.target.value))} />
+            <p style={{ fontSize: 12, color: "var(--purple-bright)", marginTop: 6 }}>
+              Max resale price: {((facePrice * resaleCap) / 100).toFixed(4)} SOL
+            </p>
+          </div>
+
+          <button
+            className="btn-primary"
+            onClick={handleCreate}
+            disabled={txStatus === "pending"}
+            style={{ width: "100%", padding: "14px 0", fontSize: 15, marginTop: 8 }}
+          >
+            {txStatus === "pending" ? "Creating..." : "Create Event on Solana"}
+          </button>
+        </div>
+
+        <TransactionToast status={txStatus} message={txMessage} txSignature={txSig} />
       </div>
-      <TransactionToast status={txStatus} message={txMessage} txSignature={txSig} />
     </div>
   );
 }
