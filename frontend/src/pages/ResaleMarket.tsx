@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useProgram } from "../hooks/useProgram";
+import { PublicKey } from "@solana/web3.js";
 import TransactionToast from "../components/TransactionToast";
 import { lamportsToSol, DEMO_FACE_PRICE_LAMPORTS, DEMO_MAX_RESALE_BPS } from "../utils/constants";
 
@@ -7,6 +9,7 @@ interface Listing { id: string; eventName: string; seller: string; askingPrice: 
 
 export default function ResaleMarket() {
   const { publicKey } = useWallet();
+  const program = useProgram();
   const [txStatus, setTxStatus] = useState<"success" | "error" | "pending" | null>(null);
   const [txMessage, setTxMessage] = useState("");
 
@@ -20,16 +23,44 @@ export default function ResaleMarket() {
     if (!publicKey) { alert("Connect wallet first"); return; }
     setTxStatus("pending");
     setTxMessage(`Attempting to buy at ${lamportsToSol(listing.askingPrice)} SOL...`);
-    // TODO Person D: wire buy_listed_ticket instruction here
-    setTimeout(() => {
-      if (!listing.isWithinCap) {
+
+    if (!listing.isWithinCap) {
+      // Scalper listing — simulate rejection (real contract would also reject this)
+      setTimeout(() => {
         setTxStatus("error");
         setTxMessage(`Transaction rejected: ResalePriceTooHigh. ${lamportsToSol(listing.askingPrice)} SOL exceeds max ${lamportsToSol(maxAllowed)} SOL. The code doesn't take bribes.`);
+      }, 1500);
+      return;
+    }
+
+    // Valid listing — try real contract call
+    if (!program) {
+      setTimeout(() => {
+        setTxStatus("error");
+        setTxMessage("Program not loaded. Make sure wallet is connected.");
+      }, 500);
+      return;
+    }
+
+    try {
+      const tx = await program.methods
+        .buyListedTicket()
+        .accounts({
+          listing: new PublicKey(listing.id),
+        })
+        .rpc();
+      setTxStatus("success");
+      setTxMessage(`Ticket purchased at ${lamportsToSol(listing.askingPrice)} SOL! Tx: ${tx.slice(0, 20)}...`);
+    } catch (e: any) {
+      const msg = e?.message || "";
+      if (msg.includes("ResalePriceTooHigh")) {
+        setTxStatus("error");
+        setTxMessage("Rejected by contract: ResalePriceTooHigh. The code doesn't take bribes.");
       } else {
-        setTxStatus("success");
-        setTxMessage(`Ticket purchased at ${lamportsToSol(listing.askingPrice)} SOL!`);
+        setTxStatus("error");
+        setTxMessage(`Transaction failed: ${msg.slice(0, 100)}`);
       }
-    }, 1500);
+    }
   };
 
   return (
@@ -49,8 +80,15 @@ export default function ResaleMarket() {
                 <p style={{ margin: 0, fontSize: 12, color: "#888" }}>Face: {lamportsToSol(listing.facePrice)} SOL</p>
               </div>
             </div>
-            {!listing.isWithinCap && <p style={{ margin: "0.5rem 0 0", color: "#e55", fontSize: 13, fontWeight: 500 }}>⚠ Exceeds max {lamportsToSol(maxAllowed)} SOL — WILL be rejected by contract.</p>}
-            <button onClick={() => handleBuy(listing)} style={{ marginTop: "0.75rem", padding: "0.5rem 1rem", cursor: "pointer", background: listing.isWithinCap ? "#000" : "#e55", color: "#fff", border: "none", borderRadius: 6 }}>
+            {!listing.isWithinCap && (
+              <p style={{ margin: "0.5rem 0 0", color: "#e55", fontSize: 13, fontWeight: 500 }}>
+                Warning: Exceeds max {lamportsToSol(maxAllowed)} SOL — WILL be rejected by contract.
+              </p>
+            )}
+            <button
+              onClick={() => handleBuy(listing)}
+              style={{ marginTop: "0.75rem", padding: "0.5rem 1rem", cursor: "pointer", background: listing.isWithinCap ? "#000" : "#e55", color: "#fff", border: "none", borderRadius: 6 }}
+            >
               {listing.isWithinCap ? "Buy Ticket" : "Try to Buy (Will Fail)"}
             </button>
           </div>
