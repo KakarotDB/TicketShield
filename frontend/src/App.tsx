@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import CreateEvent from "./pages/CreateEvent";
 import EventPage from "./pages/EventPage";
@@ -8,16 +8,32 @@ import Transparency from "./pages/Transparency";
 import WalletConnect from "./components/WalletConnect";
 
 export default function App() {
+  const location = useLocation();
+
+  const navLinks = [
+    { to: "/event", label: "Buy Tickets" },
+    { to: "/create", label: "Organiser" },
+    { to: "/my-tickets", label: "My Tickets" },
+    { to: "/resale", label: "Resale Market" },
+    { to: "/transparency", label: "Transparency" },
+  ];
+
   return (
     <div style={{ fontFamily: "sans-serif", maxWidth: 960, margin: "0 auto", padding: "0 1rem" }}>
-      <nav style={{ display: "flex", gap: "1.5rem", padding: "1rem 0", borderBottom: "1px solid #eee", alignItems: "center" }}>
-        <Link to="/" style={{ fontWeight: 600, textDecoration: "none", color: "#000" }}>TicketShield</Link>
-        <Link to="/event" style={{ textDecoration: "none", color: "#555" }}>Buy Tickets</Link>
-        <Link to="/create" style={{ textDecoration: "none", color: "#555" }}>Organiser</Link>
-        <Link to="/my-tickets" style={{ textDecoration: "none", color: "#555" }}>My Tickets</Link>
-        <Link to="/resale" style={{ textDecoration: "none", color: "#555" }}>Resale Market</Link>
-        <Link to="/transparency" style={{ textDecoration: "none", color: "#555" }}>Transparency</Link>
-        <div style={{ marginLeft: "auto" }}><WalletConnect /></div>
+      <nav className="ts-nav">
+        <Link to="/" className="ts-nav-logo">🛡 TicketShield</Link>
+        {navLinks.map(link => (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={location.pathname === link.to ? "active" : ""}
+          >
+            {link.label}
+          </Link>
+        ))}
+        <div style={{ marginLeft: "auto" }}>
+          <WalletConnect />
+        </div>
       </nav>
       <main style={{ padding: "2rem 0" }}>
         <Routes>

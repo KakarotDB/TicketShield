@@ -9,6 +9,10 @@ import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import { DEVNET_RPC } from "./utils/constants";
 import App from "./App";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "./styles/theme.css";
+import "./styles/global.css";
+import "./styles/cards.css";
+import "./styles/pages.css";
 
 const wallets = [new PhantomWalletAdapter()];
 

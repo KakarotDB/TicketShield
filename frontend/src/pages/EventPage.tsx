@@ -6,7 +6,7 @@ import { useEventData } from "../hooks/useEventData";
 import TransactionToast from "../components/TransactionToast";
 import { DEMO_EVENT_NAME, lamportsToSol, bpsToPercent } from "../utils/constants";
 
-const DEMO_EVENT_PDA = ""; // TODO Person A: fill in after anchor deploy
+const DEMO_EVENT_PDA = "7mHoZqMNQFvfnE1GtCQmgLYfaGX3QQAMWrtLPoTGrsdB"; 
 
 export default function EventPage() {
   const { publicKey } = useWallet();
@@ -21,47 +21,102 @@ export default function EventPage() {
     setTxStatus("pending");
     setTxMessage("Purchasing ticket...");
     try {
-  const eventPDA = new PublicKey(DEMO_EVENT_PDA || "11111111111111111111111111111111");
-
-  const [ticketMintPDA] = PublicKey.findProgramAddressSync(
-    [Buffer.from("ticket_mint"), eventPDA.toBuffer()],
-    program.programId
-  );
-
-  const sig = await (program.methods as any)
-    .purchaseTicket()
-    .accounts({
-      event: eventPDA,
-      ticketMint: ticketMintPDA,
-      buyer: publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .rpc();
-
-  setTxSig(sig);
-  setTxStatus("success");
-  setTxMessage("Ticket purchased! Check My Tickets.");
-} catch (err: any) {
+      const eventPDA = new PublicKey(DEMO_EVENT_PDA || "11111111111111111111111111111111");
+      const [ticketMintPDA] = PublicKey.findProgramAddressSync(
+        [Buffer.from("ticket_mint"), eventPDA.toBuffer()],
+        program.programId
+      );
+      const sig = await (program.methods as any)
+        .purchaseTicket()
+        .accounts({
+          event: eventPDA,
+          ticketMint: ticketMintPDA,
+          buyer: publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      setTxSig(sig);
+      setTxStatus("success");
+      setTxMessage("Ticket purchased! Check My Tickets.");
+    } catch (err: any) {
       setTxStatus("error");
       setTxMessage(err.message || "Purchase failed");
     }
   };
 
-  const displayEvent = event ?? { name: DEMO_EVENT_NAME, facePrice: 65_000_000, maxResaleBps: 11000, totalSupply: 10, ticketsSold: 3, isActive: true };
-  if (loading) return <p>Loading event...</p>;
+  const displayEvent = event ?? {
+    name: DEMO_EVENT_NAME,
+    facePrice: 65_000_000,
+    maxResaleBps: 11000,
+    totalSupply: 10,
+    ticketsSold: 3,
+    isActive: true,
+  };
 
-  return (
-    <div style={{ maxWidth: 480 }}>
-      <h2>{displayEvent.name}</h2>
-      <p style={{ fontSize: "1.5rem", fontWeight: 600 }}>{lamportsToSol(displayEvent.facePrice)} SOL</p>
-      <p style={{ color: "#555" }}>{displayEvent.ticketsSold} / {displayEvent.totalSupply} tickets sold</p>
-      <p style={{ color: "#888", fontSize: 14 }}>Max resale: {lamportsToSol(displayEvent.facePrice * bpsToPercent(displayEvent.maxResaleBps) / 100).toFixed(4)} SOL</p>
-      {displayEvent.isActive
-        ? <button onClick={handleBuy} disabled={!publicKey || txStatus === "pending"} style={{ marginTop: "1rem", padding: "0.75rem 2rem", fontSize: "1rem", cursor: "pointer", background: "#000", color: "#fff", border: "none", borderRadius: 8 }}>
-            {!publicKey ? "Connect Wallet to Buy" : txStatus === "pending" ? "Buying..." : `Buy Ticket — ${lamportsToSol(displayEvent.facePrice)} SOL`}
-          </button>
-        : <p style={{ color: "#e55", fontWeight: 600 }}>This event is not active.</p>}
+  if (loading) return <p style={{ color: "var(--text-muted)", padding: 40 }}>Loading event...</p>;
+
+return (
+  <div className="page-wrapper">
+    <div style={{
+      background: "rgba(255,255,255,0.03)",
+      border: "1px solid rgba(167,139,250,0.2)",
+      borderRadius: 18,
+      padding: "36px 40px",
+      maxWidth: 500,
+    }}>
+      <h2 style={{
+        fontFamily: "var(--font-heading)",
+        fontSize: 28,
+        fontWeight: 700,
+        color: "var(--text-primary)",
+        marginBottom: 8
+      }}>
+        {displayEvent.name}
+      </h2>
+
+      <p style={{ fontSize: 36, fontWeight: 700, color: "var(--purple-bright)", margin: "12px 0 4px" }}>
+        {lamportsToSol(displayEvent.facePrice)} SOL
+      </p>
+
+      <p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 4 }}>
+        {displayEvent.ticketsSold} / {displayEvent.totalSupply} tickets sold
+      </p>
+
+      <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 20 }}>
+        Max resale: {lamportsToSol(displayEvent.facePrice * bpsToPercent(displayEvent.maxResaleBps) / 100).toFixed(4)} SOL
+      </p>
+
+      <div style={{
+        background: "rgba(124,58,237,0.1)",
+        border: "1px solid rgba(124,58,237,0.25)",
+        borderRadius: 8,
+        padding: "10px 14px",
+        fontSize: 13,
+        color: "var(--purple-bright)",
+        marginBottom: 24
+      }}>
+        ⚡ Resale cap enforced by smart contract — scalpers mathematically cannot exceed this price
+      </div>
+
+      {displayEvent.isActive ? (
+        <button
+          className="btn-primary"
+          onClick={handleBuy}
+          disabled={!publicKey || txStatus === "pending"}
+          style={{ width: "100%", padding: "14px 0", fontSize: 15 }}
+        >
+          {!publicKey
+            ? "Connect Wallet to Buy"
+            : txStatus === "pending"
+            ? "Buying..."
+            : `Buy Ticket — ${lamportsToSol(displayEvent.facePrice)} SOL`}
+        </button>
+      ) : (
+        <p style={{ color: "#f87171", fontWeight: 600 }}>This event is not active.</p>
+      )}
+
       <TransactionToast status={txStatus} message={txMessage} txSignature={txSig} />
     </div>
-  );
+  </div>
+);
 }

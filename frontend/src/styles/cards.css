@@ -1,0 +1,106 @@
+/* Base glass card */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 28px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.glass-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Purple accent card */
+.glass-card-purple {
+  background: var(--bg-card-purple);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card-purple);
+  border-radius: 18px;
+  padding: 28px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.glass-card-purple:hover {
+  border-color: rgba(167, 139, 250, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Card icon box */
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.card-icon-purple {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+}
+
+.card-icon-blue {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.card-icon-purple-bright {
+  background: rgba(124, 58, 237, 0.25);
+  border: 1px solid rgba(167, 139, 250, 0.5);
+}
+
+/* Quote block */
+.quote-block {
+  background: rgba(124, 58, 237, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 18px;
+  padding: 40px;
+  text-align: center;
+}
+
+/* Concert bg section */
+.concert-bg-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.concert-bg-section img.concert-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+}
+
+.concert-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 6, 20, 0.75) 0%,
+    rgba(7, 7, 15, 0.88) 50%,
+    rgba(7, 7, 15, 0.96) 100%
+  );
+}
+
+.concert-bg-tint {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 55%);
+}
+
+.concert-bg-content {
+  position: relative;
+  z-index: 2;
+  padding: 64px 48px;
+}
