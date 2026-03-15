@@ -7,10 +7,10 @@
 
 | Person | Owns |
 |--------|------|
-| A | errors.rs, state/, create_event.rs, purchase_ticket.rs, lib.rs, integration |
-| B | list_ticket.rs, buy_listed_ticket.rs (★ enforcement), cancel_listing.rs, tests |
-| C | hooks/, components/, CreateEvent.tsx, EventPage.tsx, MyTickets.tsx |
-| D | Home.tsx, ResaleMarket.tsx, Transparency.tsx, pitch deck, demo script |
+| Mrigaj | errors.rs, state/, create_event.rs, purchase_ticket.rs, lib.rs, integration |
+| Sanchita | list_ticket.rs, buy_listed_ticket.rs (★ enforcement), cancel_listing.rs, tests |
+| Ubika | hooks/, components/, CreateEvent.tsx, EventPage.tsx, MyTickets.tsx |
+| Riddhi | Home.tsx, ResaleMarket.tsx, Transparency.tsx, pitch deck, demo script |
 
 ## Quick Start
 
