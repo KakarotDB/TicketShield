@@ -1,7 +1,7 @@
 // Person A: replace PROGRAM_ID after anchor deploy
 // Then copy anchor/target/idl/ticketshield.json -> frontend/src/idl/ticketshield.json
 
-export const PROGRAM_ID = "11111111111111111111111111111111";
+export const PROGRAM_ID = "Ft9ag3LtV2PWM5vADsyj9sEfthoWYKgwLiX3XxZtKoPX";
 export const DEVNET_RPC = "https://api.devnet.solana.com";
 export const DEMO_FACE_PRICE_LAMPORTS = 65_000_000;
 export const DEMO_MAX_RESALE_BPS = 11000;
