@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-phantom": "^0.9.24",
@@ -19,7 +21,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
-    "vite-plugin-node-polyfills": "^0.25.0"
+    "rollup-plugin-node-polyfills": "^0.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
