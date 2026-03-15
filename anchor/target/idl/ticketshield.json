@@ -21,14 +21,77 @@
       ],
       "accounts": [
         {
-          "name": "buyer",
-          "writable": true,
-          "signer": true
+          "name": "event",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event.organizer",
+                "account": "Event"
+              },
+              {
+                "kind": "account",
+                "path": "event.name",
+                "account": "Event"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "writable": true
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true
+        },
+        {
+          "name": "buyer_ticket_account",
+          "writable": true
         },
         {
           "name": "seller",
           "writable": true
         },
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel_listing",
+      "discriminator": [
+        41,
+        183,
+        50,
+        232,
+        230,
+        233,
+        157,
+        70
+      ],
+      "accounts": [
         {
           "name": "event",
           "pda": {
@@ -58,196 +121,7 @@
         },
         {
           "name": "listing",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  108,
-                  105,
-                  115,
-                  116,
-                  105,
-                  110,
-                  103
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "listing.ticket_mint",
-                "account": "Listing"
-              },
-              {
-                "kind": "account",
-                "path": "listing.seller",
-                "account": "Listing"
-              }
-            ]
-          }
-        },
-        {
-          "name": "escrow_token_account",
           "writable": true
-        },
-        {
-          "name": "buyer_ticket_account",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "buyer"
-              },
-              {
-                "kind": "const",
-                "value": [
-                  6,
-                  221,
-                  246,
-                  225,
-                  215,
-                  101,
-                  161,
-                  147,
-                  217,
-                  203,
-                  225,
-                  70,
-                  206,
-                  235,
-                  121,
-                  172,
-                  28,
-                  180,
-                  133,
-                  237,
-                  95,
-                  91,
-                  55,
-                  145,
-                  58,
-                  140,
-                  245,
-                  133,
-                  126,
-                  255,
-                  0,
-                  169
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "ticket_mint"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "ticket_mint"
-        },
-        {
-          "name": "token_program",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-        },
-        {
-          "name": "associated_token_program",
-          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
-        },
-        {
-          "name": "system_program",
-          "address": "11111111111111111111111111111111"
-        },
-        {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "cancel_listing",
-      "discriminator": [
-        41,
-        183,
-        50,
-        232,
-        230,
-        233,
-        157,
-        70
-      ],
-      "accounts": [
-        {
-          "name": "seller",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "listing",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  108,
-                  105,
-                  115,
-                  116,
-                  105,
-                  110,
-                  103
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "listing.ticket_mint",
-                "account": "Listing"
-              },
-              {
-                "kind": "account",
-                "path": "seller"
-              }
-            ]
-          }
         },
         {
           "name": "escrow_token_account",
@@ -256,6 +130,11 @@
         {
           "name": "seller_ticket_account",
           "writable": true
+        },
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
         },
         {
           "name": "token_program",
@@ -386,11 +265,6 @@
       ],
       "accounts": [
         {
-          "name": "seller",
-          "writable": true,
-          "signer": true
-        },
-        {
           "name": "event",
           "pda": {
             "seeds": [
@@ -418,103 +292,6 @@
           }
         },
         {
-          "name": "seller_ticket_account",
-          "writable": true
-        },
-        {
-          "name": "escrow_token_account",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "path": "listing"
-              },
-              {
-                "kind": "const",
-                "value": [
-                  6,
-                  221,
-                  246,
-                  225,
-                  215,
-                  101,
-                  161,
-                  147,
-                  217,
-                  203,
-                  225,
-                  70,
-                  206,
-                  235,
-                  121,
-                  172,
-                  28,
-                  180,
-                  133,
-                  237,
-                  95,
-                  91,
-                  55,
-                  145,
-                  58,
-                  140,
-                  245,
-                  133,
-                  126,
-                  255,
-                  0,
-                  169
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "ticket_mint"
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140,
-                151,
-                37,
-                143,
-                78,
-                36,
-                137,
-                241,
-                187,
-                61,
-                16,
-                41,
-                20,
-                142,
-                13,
-                131,
-                11,
-                90,
-                19,
-                153,
-                218,
-                255,
-                16,
-                132,
-                4,
-                142,
-                123,
-                216,
-                219,
-                233,
-                248,
-                89
-              ]
-            }
-          }
-        },
-        {
-          "name": "ticket_mint"
-        },
-        {
           "name": "listing",
           "writable": true,
           "pda": {
@@ -533,15 +310,54 @@
               },
               {
                 "kind": "account",
-                "path": "event.ticket_mint",
-                "account": "Event"
+                "path": "seller"
               },
               {
                 "kind": "account",
-                "path": "seller"
+                "path": "ticket_mint"
               }
             ]
           }
+        },
+        {
+          "name": "ticket_mint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  99,
+                  107,
+                  101,
+                  116,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller_ticket_account",
+          "writable": true
+        },
+        {
+          "name": "escrow_token_account",
+          "writable": true
+        },
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
         },
         {
           "name": "token_program",
@@ -808,6 +624,19 @@
         80,
         139,
         194
+      ]
+    },
+    {
+      "name": "ResaleRejected",
+      "discriminator": [
+        14,
+        197,
+        92,
+        235,
+        231,
+        128,
+        227,
+        162
       ]
     },
     {
@@ -1092,8 +921,36 @@
             "type": "pubkey"
           },
           {
+            "name": "event",
+            "type": "pubkey"
+          },
+          {
             "name": "seller",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResaleRejected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "listing",
+            "type": "pubkey"
+          },
+          {
+            "name": "event",
+            "type": "pubkey"
+          },
+          {
+            "name": "attempted_price",
+            "type": "u64"
+          },
+          {
+            "name": "max_allowed_price",
+            "type": "u64"
           }
         ]
       }
@@ -1108,16 +965,20 @@
             "type": "pubkey"
           },
           {
-            "name": "seller",
+            "name": "event",
             "type": "pubkey"
           },
           {
-            "name": "event",
+            "name": "seller",
             "type": "pubkey"
           },
           {
             "name": "asking_price",
             "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
           }
         ]
       }
@@ -1156,7 +1017,7 @@
             "type": "pubkey"
           },
           {
-            "name": "buyer",
+            "name": "event",
             "type": "pubkey"
           },
           {
@@ -1164,11 +1025,15 @@
             "type": "pubkey"
           },
           {
-            "name": "event",
+            "name": "buyer",
             "type": "pubkey"
           },
           {
-            "name": "price_paid",
+            "name": "resale_price",
+            "type": "u64"
+          },
+          {
+            "name": "face_price",
             "type": "u64"
           }
         ]
