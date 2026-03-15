@@ -16,6 +16,6 @@ export function useProgram() {
       signTransaction: wallet.signTransaction,
       signAllTransactions: wallet.signAllTransactions,
     }, { commitment: "confirmed" });
-    return new Program(idl as Idl, new PublicKey(PROGRAM_ID), provider);
+    return new Program(idl as unknown as Idl, new PublicKey(PROGRAM_ID), provider);;
   }, [connection, wallet.publicKey, wallet.signTransaction, wallet.signAllTransactions]);
 }

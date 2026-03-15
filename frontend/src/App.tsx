@@ -19,7 +19,7 @@ export default function App() {
   ];
 
   return (
-    <div style={{ fontFamily: "sans-serif", maxWidth: 960, margin: "0 auto", padding: "0 1rem" }}>
+    <div style={{ fontFamily: "sans-serif", maxWidth: 1100, margin: "0 auto" }}>
       <nav className="ts-nav">
         <Link to="/" className="ts-nav-logo">🛡 TicketShield</Link>
         {navLinks.map(link => (

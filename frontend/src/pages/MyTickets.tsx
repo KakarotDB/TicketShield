@@ -50,7 +50,6 @@ export default function MyTickets() {
 
   const handleListForResale = async () => {
     if (!program || !publicKey) { alert("Connect your wallet first"); return; }
-    if (DEMO_TICKET_MINT === "PASTE_MINT_HERE") { alert("Fill in DEMO_TICKET_MINT"); return; }
 
     const priceInput = prompt("Enter resale price in SOL (max 0.0715 for 110% cap):");
     if (!priceInput) return;
